@@ -20,7 +20,6 @@ public class CinemaController : ControllerBase
         _mapper = mapper;
     }
 
-
     [HttpPost]
     public IActionResult AdicionaCinema([FromBody] CreateCinemaDto cinemaDto)
     {
@@ -60,7 +59,6 @@ public class CinemaController : ControllerBase
         _context.SaveChanges();
         return NoContent();
     }
-
 
     [HttpDelete("{id}")]
     public IActionResult DeletaCinema(int id)

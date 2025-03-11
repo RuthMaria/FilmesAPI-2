@@ -9,7 +9,7 @@ public class FilmeContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.UseSqlServer(connectionString).UseLazyLoadingProxies();
     }
 
     public DbSet<Filme> Filmes { get; set; }
