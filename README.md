@@ -19,14 +19,14 @@
 
 ## :books: Sobre
 
-Uma API REST que permite:
+Uma API REST que permite fazer:
 
-- Criar filme
-- Atualizar filme
-- Deletar filme
-- Visualizar filmes
+- CRUD de filme
+- CRUD de endereco
+- CRUD de cinema
+- Criar, listar e buscar sessão
 
-onde foi desenvolvida utilizando o API Web do ASP.NET Core, ao qual foi utilizado os principais verbos HTTP e as informações para o usuário foi retornada de maneira padronizada utilizado DTOs para lidar com requisições e respostas; além de utilizar DbContext para escrita e postman para requisições.
+onde foi utilizado o Entity Framework para mapear entidades e criar relacionamentos (1:1, 1:n e n:n). Além disso,foi realizado consultas diretamente em C# utilizando LINQ.
 
 <a id="technologies"></a><br>
 
@@ -40,7 +40,8 @@ onde foi desenvolvida utilizando o API Web do ASP.NET Core, ao qual foi utilizad
 
 ## :tv: Prévia
 
-<img src="./api.png">
+<img src="./api-1.png">
+<img src="./api-2.png">
 
 <a id="rodar"></a><br>
 
@@ -49,7 +50,7 @@ onde foi desenvolvida utilizando o API Web do ASP.NET Core, ao qual foi utilizad
 - Clonar este repositório
 
 ```
-git clone https://github.com/RuthMaria/FilmesAPI.git
+git clone https://github.com/RuthMaria/FilmesAPI-2.git
 ```
 
 - Rodar o projeto no Visual Studio

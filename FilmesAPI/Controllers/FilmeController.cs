@@ -26,7 +26,7 @@ public class FilmeController : ControllerBase
     }
 
     /// <summary>
-    /// Adiciona um filme
+    /// Adiciona um novo filme.
     /// </summary>
     /// <param name="filmeDto">Objeto com os campos necessários para criação de um filme</param>
     /// <returns>IActionResult</returns>
@@ -72,26 +72,41 @@ public class FilmeController : ControllerBase
      */
 
     /// <summary>
-    /// Lista todos os filmes
+    /// Lista todos os filmes.
     /// </summary>
     /// <param name="skip">Quantidade de itens que serão pulados</param>
     /// <param name="take">Quantidade de itens que serão selecionados</param>
+    /// <param name="nomeCinema">Opcional: Nome do cinema desejado para a filtragem</param>
+    /// <returns>Lista de filmes.</returns>
     /// <response code="200">Caso a listagem seja feita com sucesso</response>
     [ProducesResponseType(typeof(List<ReadFilmeDto>), StatusCodes.Status200OK)]
     [HttpGet]
-    public IEnumerable<ReadFilmeDto> RecuperaFilmes([FromQuery] int skip = 0,
-        [FromQuery] int take = 50)
+    public IEnumerable<ReadFilmeDto> RecuperaFilmes(
+        [FromQuery] int skip = 0,
+        [FromQuery] int take = 50,
+        [FromQuery] string? nomeCinema = null)
     {
+        if (nomeCinema == null)
+        {
         return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take).ToList());
+        }
+
+        return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes
+            .Where(filme => filme.Sessoes
+            .Any(sessao => sessao.Cinema.Nome == nomeCinema))
+            .Skip(skip)
+            .Take(take)
+            .ToList());
     }
 
     /* seria a rota "Filme/id" */
 
     /// <summary>
-    /// Busca um filme
+    /// Busca um filme pleo ID.
     /// </summary>
     /// <param name="id">Identificador do filme</param>
-    /// <response code="200">Caso a busca seja feita com sucesso</response>
+    /// <response code="200">Caso a busca seja feita com sucesso.</response>
+    /// <response code="404">Caso o filme não seja encontrado.</response>
     /// <returns>IActionResult</returns>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("{id}")]
@@ -108,11 +123,12 @@ public class FilmeController : ControllerBase
     }
 
     /// <summary>
-    /// Atualiza um filme
+    /// Atualiza um filme pelo ID.
     /// </summary>
     /// <param name="id">Identificador do filme</param>
     /// <param name="filmeDto">Objeto com os campos que serão alterados</param>
-    /// <response code="204">Sem conteúdo</response>
+    /// <response code="204">Sem conteúdo.</response>
+    /// <response code="404">Caso o filme não seja encontrado.</response>
     /// <returns>IActionResult</returns>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpPut("{id}")]
@@ -145,11 +161,12 @@ public class FilmeController : ControllerBase
      */
 
     /// <summary>
-    /// Atualiza um filme
+    /// Atualiza um filme pelo ID
     /// </summary>
     /// <param name="id">Identificador do filme</param>
     /// <param name="patch">Array de objeto com os campos que serão alterados</param>
     /// <response code="204">Sem conteúdo</response>
+    /// <response code="404">Caso o filme não seja encontrado.</response>
     /// <returns>IActionResult</returns>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpPatch("{id}")]
@@ -177,10 +194,11 @@ public class FilmeController : ControllerBase
     }
 
     /// <summary>
-    /// Deleta um filme
+    /// Deleta um filme pelo ID
     /// </summary>
     /// <param name="id">Identificador do filme</param>
     /// <response code="204">Sem conteúdo</response>
+    /// <response code="404">Caso o filme não seja encontrado.</response>
     /// <returns>IActionResult</returns>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpDelete("{id}")]
